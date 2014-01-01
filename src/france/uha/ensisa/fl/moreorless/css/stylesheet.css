@@ -1,0 +1,126 @@
+.backgd {
+    -fx-background-color:
+        linear-gradient(#7abc06, #2e4600),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+    -fx-background-radius: 0, 5;
+    -fx-background-insets: 0, 5;
+    -fx-padding: 10 10 10 10;
+}
+
+.gameName {
+    -fx-font-family: "Jellyka Saint-Andrew's Queen";
+    -fx-font-size: 120;
+    -fx-fill: #527e02;
+    -fx-effect: dropshadow(three-pass-box, #80c800, 20, 0.5, 0, 0);
+}
+
+.textGame {
+    -fx-font-family: "Freestyle Script";
+    -fx-font-size: 40;
+    -fx-text-fill: #345101;
+}
+
+.textGameMoreLess {
+    -fx-font-family: "Freestyle Script";
+    -fx-font-size: 50;
+    -fx-text-fill: #345101;
+    -fx-effect: dropshadow(three-pass-box, #80c800, 30, 0.8, 0, 0);
+}
+
+.gameCredits{
+    -fx-font-family: Calibri;
+    -fx-font-size: 13;
+    -fx-fill: white;
+}
+
+.text-field{
+    -fx-font-size: 25;
+    -fx-padding: 7;
+    -fx-alignment: center;
+    -fx-background-color: transparent, green, transparent, #dafb9f;
+    -fx-background-radius: 2,2,2,2;
+}
+
+.check-box .label{
+    -fx-font-family: Calibri;
+    -fx-font-size: 15;
+    -fx-text-fill: #345101;
+    -fx-padding: 5 0 0 0;
+}
+
+.check-box .box {
+     -fx-padding: 3;
+     -fx-background-color: transparent, #2f4700, transparent, green;
+}
+
+.check-box:selected .box {
+    -fx-effect: dropshadow(three-pass-box, white, 15, 0.2, 0, 0);
+}
+
+.check-box:selected .mark {
+     -fx-background-color: white;
+}
+
+.button {
+    -fx-font-family: Arial;
+    -fx-font-size: 15;
+    -fx-text-fill: white;
+    -fx-background-color: #406200;
+    -fx-label-padding: 5;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-opacity: 1;
+}
+
+.button:hover {
+    -fx-background-color: #5e8d07;
+    -fx-effect: dropshadow(three-pass-box, white, 20, 0.2, 0, 0);
+}
+
+.list-view {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-padding: 0 0 0 5;
+}
+
+.list-cell:even {
+    -fx-background-color: #4d7401;
+    -fx-font: 30 "Freestyle Script";
+    -fx-text-fill: white;
+}
+.list-cell:odd {
+    -fx-background-color: #71aa08;
+    -fx-font: 30 "Freestyle Script";
+    -fx-text-fill: white;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track-background{
+    -fx-opacity: 0;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: white;
+    -fx-opacity: 0.3;
+}
+
+.scroll-bar .increment-button {
+  -fx-opacity: 0;
+}
+
+.scroll-bar .decrement-button {
+  -fx-opacity: 0;
+}
+
+.scroll-bar:vertical .thumb {
+  -fx-opacity: 0.8;
+  -fx-background-color: radial-gradient(center 50% 50%, radius 50%, #7abc06 20%, #2e4600 80%);
+}
+.scroll-bar:vertical:pressed .thumb {
+    -fx-effect: innershadow(three-pass-box, #7abc06, 10, 0.2, 0, 0);
+}
