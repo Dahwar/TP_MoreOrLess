@@ -1,6 +1,7 @@
 package france.uha.ensisa.fl.moreorless;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -156,10 +157,12 @@ public class MoreOrLess extends Application {
         rulesText.setWrappingWidth(450.0);
         
         // Animations
-        final FadeTransition fadeTransitionOff = tf.getFadeTransition(0.25, left, 1, 0, 1, false);
-        final FadeTransition fadeTransitionOn = tf.getFadeTransition(0.25, left, 0, 1, 1, false);
+        final FadeTransition fadeTransitionLeftOff = tf.getFadeTransition(0.25, left, 1, 0, 1, false);
+        final FadeTransition fadeTransitionLeftOn = tf.getFadeTransition(0.25, left, 0, 1, 1, false);
         final FadeTransition fadeTransitionMorelessOff = tf.getFadeTransition(0.15, moreless, 1, 0, 1, false);
         final FadeTransition fadeTransitionMorelessOn = tf.getFadeTransition(0.15, moreless, 0, 1, 1, false);
+        final TranslateTransition translateTransitionXMorelessOn = tf.getTranslateTransitionX(0.15, moreless, -100, 0, 1, false);
+        final TranslateTransition translateTransitionXMorelessOff = tf.getTranslateTransitionX(0.15, moreless, 0, 100, 1, false);
         
          //Controllers
          number.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -205,8 +208,8 @@ public class MoreOrLess extends Application {
                 if(Integer.parseInt(interval.getText())>model.getLimit() || Integer.parseInt(interval.getText())<=0) {
                 }
                 else {
-                    fadeTransitionOff.play();
-                    fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                    fadeTransitionLeftOff.play();
+                    fadeTransitionLeftOff.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
                             model.init(Integer.parseInt(interval.getText()));
@@ -217,7 +220,7 @@ public class MoreOrLess extends Application {
                             moreless.setText(" Entrez un chiffre ! ");
                             number.setText("");
                             number.setDisable(false);
-                            fadeTransitionOn.play();
+                            fadeTransitionLeftOn.play();
                         }
                     });
                 }
@@ -228,13 +231,13 @@ public class MoreOrLess extends Application {
         reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent t) {
-                fadeTransitionOff.play();
-                fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                fadeTransitionLeftOff.play();
+                fadeTransitionLeftOff.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         left.setCenter(beforeGame);
                         left.setRight(null);
-                        fadeTransitionOn.play();
+                        fadeTransitionLeftOn.play();
                     }
                 });
             }
@@ -243,12 +246,12 @@ public class MoreOrLess extends Application {
         getRules.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fadeTransitionOff.play();
-                fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                fadeTransitionLeftOff.play();
+                fadeTransitionLeftOff.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         left.setCenter(rules);
-                        fadeTransitionOn.play();
+                        fadeTransitionLeftOn.play();
                     }
                 });
             }
@@ -257,12 +260,12 @@ public class MoreOrLess extends Application {
         returnToMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                fadeTransitionOff.play();
-                fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                fadeTransitionLeftOff.play();
+                fadeTransitionLeftOff.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         left.setCenter(beforeGame);
-                        fadeTransitionOn.play();
+                        fadeTransitionLeftOn.play();
                     }
                 });
             }
