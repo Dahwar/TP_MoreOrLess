@@ -60,7 +60,7 @@ public class MoreOrLessModel {
     }
     
     public void setMax(int max) {
-        if(max<=getLimit())
+        if(max<=getLimit() && max>=0)
             this.max=max;
         else
             this.max=getLimit();

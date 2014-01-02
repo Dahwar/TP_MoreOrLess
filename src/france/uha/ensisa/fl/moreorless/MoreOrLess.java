@@ -1,7 +1,6 @@
 package france.uha.ensisa.fl.moreorless;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.FadeTransitionBuilder;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,7 +24,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  *
@@ -43,6 +42,9 @@ public class MoreOrLess extends Application {
         HBox buttonGame = new HBox();
         VBox enterNumber = new VBox();
         VBox setInterval = new VBox();
+        final VBox rules = new VBox();
+        BorderPane rulesTextContainer = new BorderPane();
+        ScrollPane sp = new ScrollPane();
         
         //Set scene
         Scene scene = new Scene(root, 800, 600);
@@ -50,13 +52,16 @@ public class MoreOrLess extends Application {
         
         //Set model and init
         final MoreOrLessModel model = new MoreOrLessModel();
-        model.init(100);
+        final TransitionFactory tf = new TransitionFactory();
+        model.init(100);        
         
         //Define all label, text, textfield, ...
         final ListView<String> list = new ListView<>();
         CheckBox cb = new CheckBox("Voir la liste des nombres testés");
         Button newGame = new Button("Nouveau");
         Button reset = new Button("Nouveau");
+        Button getRules = new Button("Règles");
+        Button returnToMenu = new Button("Menu");
         final TextField number = new TextField();
         final TextField interval = new TextField(Integer.toString(model.getMax()));
         final Label moreless = new Label("");
@@ -64,6 +69,14 @@ public class MoreOrLess extends Application {
         final Label intervalText = new Label(" Choisir un intervalle de 0 à ... ! " + "\n Maximum : 10000000 ");
         Text gameTitle = new Text("More or Less");
         Text credits = new Text("Copyright 2014 LACROIX Florent. Tous droits réservés.");
+        Text rulesText = new Text("Règles du More or Less\n\nLe but du jeu est de trouver un chiffre généré aléatoirement "
+                + "par l'ordinateur entre 0 et un nombre maximum fixé par l'utilisateur, en un minimum de coup.\n"
+                + "Il faut tout d'abord choisir notre interval, allant de zéro "
+                + "jusqu'à un chiffre déterminé par l'utilisateur (maximum : " + model.getLimit() + ").Ensuite, "
+                + "il faut entrer un chiffre que l'on pense être le chiffre généré par l'ordinateur. En validant avec \"Entrée\", "
+                + "on nous dit que le nombre secret est plus grand ou plus petit que le nombre choisi. On entre alors un autre chiffre, "
+                + "et ainsi de suite jusq'à trouver le bon nomre.\n\n"
+                + "Play & Enjoy :)");
         
         
         //Load ressources
@@ -82,16 +95,22 @@ public class MoreOrLess extends Application {
         number.setPromptText("Entrez un nombre");
         
         //Fill containers
-        buttonGame.getChildren().add(reset);
+        rulesTextContainer.setCenter(rulesText);
+        sp.setContent(rulesTextContainer);
         
+        buttonGame.getChildren().add(newGame);
+        buttonGame.getChildren().add(getRules);
+        
+        rules.getChildren().add(sp);
+        rules.getChildren().add(returnToMenu);
         enterNumber.getChildren().add(chosenInterval);
         enterNumber.getChildren().add(moreless);
         enterNumber.getChildren().add(number);
         enterNumber.getChildren().add(cb);
-        enterNumber.getChildren().add(buttonGame);
+        enterNumber.getChildren().add(reset);
         setInterval.getChildren().add(intervalText);
         setInterval.getChildren().add(interval);
-        setInterval.getChildren().add(newGame);
+        setInterval.getChildren().add(buttonGame);
         
         beforeGame.getChildren().add(setInterval);
         game.getChildren().add(enterNumber);
@@ -111,6 +130,7 @@ public class MoreOrLess extends Application {
         intervalText.setTextAlignment(TextAlignment.CENTER);
         chosenInterval.setTextAlignment(TextAlignment.CENTER);
         buttonGame.setAlignment(Pos.CENTER);
+        buttonGame.setSpacing(10.0);
         BorderPane.setAlignment(gameTitle, Pos.CENTER);
         game.setAlignment(Pos.TOP_CENTER);
         list.setPrefWidth(120);
@@ -122,27 +142,24 @@ public class MoreOrLess extends Application {
         VBox.setMargin(cb, new Insets(0,0,15,0));
         BorderPane.setAlignment(credits, Pos.BOTTOM_RIGHT);
         BorderPane.setMargin(credits, new Insets(5, 0, -5, 0));
+        sp.setPrefWidth(480.0);
+        sp.setMaxWidth(480.0);
+        sp.setMinWidth(480.0);
+        sp.setPrefHeight(275.0);
+        sp.setMaxHeight(275.0);
+        sp.setMinHeight(275.0);
+        rulesText.getStyleClass().add("textRules");
+        rulesText.setTextAlignment(TextAlignment.CENTER);
+        VBox.setMargin(sp, new Insets(20,0,15,0));
+        BorderPane.setMargin(rulesText, new Insets(5.0, 0.0, 5.0, 15.0));
+        rules.setAlignment(Pos.TOP_CENTER);
+        rulesText.setWrappingWidth(450.0);
         
         // Animations
-        final FadeTransition fadeTransitionOff;
-        fadeTransitionOff = FadeTransitionBuilder.create()
-            .duration(Duration.seconds(0.25))
-            .node(left)
-            .fromValue(1)
-            .toValue(0)
-            .cycleCount(1)
-            .autoReverse(false)
-            .build();
-        
-         final FadeTransition fadeTransitionOn;
-         fadeTransitionOn = FadeTransitionBuilder.create()
-            .duration(Duration.seconds(0.25))
-            .node(left)
-            .fromValue(0)
-            .toValue(1)
-            .cycleCount(1)
-            .autoReverse(false)
-            .build();
+        final FadeTransition fadeTransitionOff = tf.getFadeTransition(0.25, left, 1, 0, 1, false);
+        final FadeTransition fadeTransitionOn = tf.getFadeTransition(0.25, left, 0, 1, 1, false);
+        final FadeTransition fadeTransitionMorelessOff = tf.getFadeTransition(0.15, moreless, 1, 0, 1, false);
+        final FadeTransition fadeTransitionMorelessOn = tf.getFadeTransition(0.15, moreless, 0, 1, 1, false);
         
          //Controllers
          number.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -150,22 +167,34 @@ public class MoreOrLess extends Application {
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
                     model.setCurrentNumber(Integer.parseInt(number.getText()));
-                    if(model.win()){
-                        moreless.setText(" C'est gagné en " + model.getListOfValue().size() + " coups ! ");
-                        number.setDisable(true);
-                    }
-                    else {
-                        if(model.getCurrentNumber()<0 || model.getCurrentNumber()>model.getMax()) {
-                            moreless.setText(" En dehors des limites ! ");
+                    fadeTransitionMorelessOff.play();
+                    fadeTransitionMorelessOff.setOnFinished(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if(model.win()){
+                                if(model.getListOfValue().size()==1) {
+                                    moreless.setText(" C'est gagné en 1 coup ! ");
+                                }
+                                else {
+                                    moreless.setText(" C'est gagné en " + model.getListOfValue().size() + " coups ! ");
+                                }
+                                number.setDisable(true);
+                            }
+                            else {
+                                if(model.getCurrentNumber()<0 || model.getCurrentNumber()>model.getMax()) {
+                                    moreless.setText(" En dehors des limites ! ");
+                                }
+                                else if(model.isMoreOrLess()== MoreOrLessModel.State.MORE) {
+                                    moreless.setText(" C'est plus ! ");
+                                }
+                                else if(model.isMoreOrLess()== MoreOrLessModel.State.LESS) {
+                                    moreless.setText(" C'est moins ! ");
+                                }
+                                number.setText("");
+                            }
+                            fadeTransitionMorelessOn.play();
                         }
-                        else if(model.isMoreOrLess()== MoreOrLessModel.State.MORE) {
-                            moreless.setText(" C'est plus ! ");
-                        }
-                        else if(model.isMoreOrLess()== MoreOrLessModel.State.LESS) {
-                            moreless.setText(" C'est moins ! ");
-                        }
-                        number.setText("");
-                    }
+                    });
                 }
             }
         });
@@ -173,7 +202,7 @@ public class MoreOrLess extends Application {
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(Integer.parseInt(interval.getText())>model.getLimit()) {
+                if(Integer.parseInt(interval.getText())>model.getLimit() || Integer.parseInt(interval.getText())<=0) {
                 }
                 else {
                     fadeTransitionOff.play();
@@ -185,7 +214,7 @@ public class MoreOrLess extends Application {
                             left.setRight(list);
                             interval.setText(Integer.toString(model.getMax()));
                             chosenInterval.setText(" Entrez un nombre entre 0 et " + model.getMax() + " \n et pressez \"Entrée\" ");
-                            moreless.setText("");
+                            moreless.setText(" Entrez un chiffre ! ");
                             number.setText("");
                             number.setDisable(false);
                             fadeTransitionOn.play();
@@ -205,6 +234,34 @@ public class MoreOrLess extends Application {
                     public void handle(ActionEvent event) {
                         left.setCenter(beforeGame);
                         left.setRight(null);
+                        fadeTransitionOn.play();
+                    }
+                });
+            }
+        });
+        
+        getRules.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fadeTransitionOff.play();
+                fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        left.setCenter(rules);
+                        fadeTransitionOn.play();
+                    }
+                });
+            }
+        });
+        
+        returnToMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                fadeTransitionOff.play();
+                fadeTransitionOff.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        left.setCenter(beforeGame);
                         fadeTransitionOn.play();
                     }
                 });

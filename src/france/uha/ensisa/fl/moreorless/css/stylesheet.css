@@ -20,6 +20,13 @@
     -fx-text-fill: #345101;
 }
 
+.textRules {
+    -fx-font-family: "Freestyle Script";
+    -fx-font-size: 40;
+    -fx-fill: #345101;
+    -fx-effect: dropshadow(three-pass-box, green, 12, 0.1, 0, 0);
+}
+
 .textGameMoreLess {
     -fx-font-family: "Freestyle Script";
     -fx-font-size: 50;
@@ -96,6 +103,10 @@
     -fx-text-fill: white;
 }
 
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
 .scroll-bar:vertical {
     -fx-background-color: transparent;
 }
@@ -119,6 +130,7 @@
 
 .scroll-bar:vertical .thumb {
   -fx-opacity: 0.8;
+  /*-fx-background-color: #2e4600;*/
   -fx-background-color: radial-gradient(center 50% 50%, radius 50%, #7abc06 20%, #2e4600 80%);
 }
 .scroll-bar:vertical:pressed .thumb {
