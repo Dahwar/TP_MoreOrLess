@@ -169,7 +169,12 @@ public class MoreOrLess extends Application {
             @Override
             public void handle(KeyEvent event) {
                 if(event.getCode() == KeyCode.ENTER) {
-                    model.setCurrentNumber(Integer.parseInt(number.getText()));
+                    if(number.getText().length()>10) {
+                        model.setCurrentNumber(Integer.parseInt(number.getText().substring(0, 10)));
+                    }
+                    else {
+                        model.setCurrentNumber(Integer.parseInt(number.getText()));
+                    }
                     fadeTransitionMorelessOff.play();
                     fadeTransitionMorelessOff.setOnFinished(new EventHandler<ActionEvent>() {
                         @Override
@@ -205,7 +210,15 @@ public class MoreOrLess extends Application {
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(Integer.parseInt(interval.getText())>model.getLimit() || Integer.parseInt(interval.getText())<=0) {
+                String temp;
+                if(interval.getText().length()>10){
+                    temp=interval.getText().substring(0,10);
+                }
+                else {
+                    temp=interval.getText();
+                }
+                
+                if(Integer.parseInt(temp)>model.getLimit() || Integer.parseInt(temp)<=0) {
                 }
                 else {
                     fadeTransitionLeftOff.play();
